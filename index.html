@@ -1,1 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026 Productivity Hub · Velvetstore</title>
+<meta name="description" content="Your complete 2026 planner by Velvetstore — weekly spreads, habit tracker, financial planner, study planner & wellness. Use instantly in your browser.">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --pink:#f5c8d5;--mint:#b5ddd0;--blue:#a5c5de;--peach:#f7d5b0;
+  --lav:#d2c5e8;--yellow:#f2e5a5;--sage:#c5d5c0;
+  --gold:#c4a240;--text:#1c1c1c;--sub:#555;--muted:#888;
+  --line:#ddd;--bg:#fdfaf6;--cream:#f9f5ee;
+}
 
+/* ── BODY & SCROLL ── */
+body{font-family:'Nunito',sans-serif;background:#e8e4de;min-height:100vh;}
+html{scroll-behavior:smooth;}
+
+/* ── LANDING ── */
+#landing{
+  min-height:100vh;
+  background:
+    radial-gradient(ellipse 500px 300px at 10% 20%,rgba(181,221,208,.5) 0%,transparent 70%),
+    radial-gradient(ellipse 400px 400px at 90% 10%,rgba(245,200,213,.55) 0%,transparent 70%),
+    radial-gradient(ellipse 350px 300px at 85% 90%,rgba(165,197,222,.45) 0%,transparent 70%),
+    radial-gradient(ellipse 450px 250px at 5% 90%,rgba(242,229,165,.5) 0%,transparent 70%),
+    var(--cream);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:40px 20px;position:relative;overflow:hidden;
+}
+
+/* blobs */
+.blob{position:absolute;border-radius:50%;opacity:.2;pointer-events:none;}
+.bl1{width:300px;height:220px;background:var(--mint);top:-60px;left:-60px;border-radius:50% 60% 55% 45%;transform:rotate(-15deg);}
+.bl2{width:220px;height:280px;background:var(--pink);top:-20px;right:-40px;border-radius:45% 55% 40% 60%;}
+.bl3{width:260px;height:200px;background:var(--peach);bottom:-50px;left:-30px;border-radius:55% 45% 60% 40%;transform:rotate(8deg);}
+.bl4{width:240px;height:200px;background:var(--lav);bottom:-30px;right:-50px;border-radius:40% 60% 45% 55%;}
+
+.land-inner{position:relative;z-index:2;max-width:640px;}
+.land-tag{font-size:11px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:20px;font-weight:500;}
+.land-year{font-family:'Cormorant Garamond',serif;font-size:120px;font-weight:300;line-height:.9;letter-spacing:-4px;color:var(--text);position:relative;}
+.land-year::after{content:'2026';position:absolute;inset:0;color:transparent;-webkit-text-stroke:1px var(--gold);transform:translate(3px,3px);z-index:-1;}
+.land-divider{width:60px;height:1.5px;background:var(--gold);margin:20px auto;}
+.land-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:400;letter-spacing:4px;text-transform:uppercase;color:var(--text);line-height:1.3;}
+.land-sub{font-size:12px;color:var(--muted);margin-top:12px;line-height:1.8;max-width:480px;margin-left:auto;margin-right:auto;}
+
+.badges{display:flex;gap:8px;margin-top:28px;flex-wrap:wrap;justify-content:center;}
+.badge{border:1px solid var(--gold);border-radius:20px;padding:5px 14px;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:600;}
+
+.start-btn{
+  margin-top:36px;
+  background:var(--gold);color:#fff;border:none;
+  padding:16px 44px;font-family:'Nunito',sans-serif;
+  font-size:15px;font-weight:700;border-radius:50px;
+  cursor:pointer;letter-spacing:1px;
+  box-shadow:0 8px 30px rgba(196,162,64,.4);
+  transition:all .25s;
+}
+.start-btn:hover{background:#b89030;transform:translateY(-2px);box-shadow:0 12px 40px rgba(196,162,64,.5);}
+.start-hint{font-size:10px;color:var(--muted);margin-top:10px;letter-spacing:1px;}
+
+/* scroll down arrow */
+.scroll-down{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);font-size:22px;color:var(--gold);opacity:.5;animation:bob 1.8s infinite;}
+@keyframes bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
+
+/* ── NAVIGATION TABS ── */
+#app{display:none;}
+.app-nav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(253,250,246,.97);
+  backdrop-filter:blur(10px);
+  border-bottom:1.5px solid var(--line);
+  display:flex;align-items:center;
+  padding:0 16px;
+  box-shadow:0 2px 16px rgba(0,0,0,.07);
+}
+.nav-brand{font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:700;color:var(--text);letter-spacing:2px;padding:12px 16px 12px 0;border-right:1px solid var(--line);margin-right:12px;white-space:nowrap;}
+.nav-tabs{display:flex;gap:2px;overflow-x:auto;flex:1;scrollbar-width:none;padding:6px 0;}
+.nav-tabs::-webkit-scrollbar{display:none;}
+.tab{
+  padding:7px 14px;border-radius:20px;font-size:11px;font-weight:600;
+  letter-spacing:.5px;cursor:pointer;white-space:nowrap;border:none;
+  background:transparent;color:var(--muted);transition:all .18s;
+}
+.tab:hover{background:rgba(196,162,64,.1);color:var(--text);}
+.tab.active{background:var(--gold);color:#fff;}
+.nav-actions{display:flex;gap:8px;margin-left:12px;padding-left:12px;border-left:1px solid var(--line);}
+.nav-btn{
+  padding:7px 14px;border-radius:20px;font-size:11px;font-weight:700;
+  cursor:pointer;border:none;white-space:nowrap;transition:all .18s;letter-spacing:.3px;
+}
+.nav-btn.save{background:var(--mint);color:#1a5a40;}
+.nav-btn.save:hover{background:#8fd4bc;}
+.nav-btn.print{background:var(--gold);color:#fff;}
+.nav-btn.print:hover{background:#b89030;}
+
+/* ── SECTIONS ── */
+.section{display:none;max-width:900px;margin:0 auto;padding:32px 20px 80px;}
+.section.active{display:block;}
+
+/* section header */
+.s-head{text-align:center;margin-bottom:24px;}
+.s-head h2{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--text);}
+.s-head p{font-size:10px;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-top:4px;}
+.gold-line{height:1.5px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:0 0 24px;}
+
+/* cards */
+.card{background:rgba(255,255,255,.85);border:1.5px solid var(--line);border-radius:12px;padding:20px;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,0,0,.04);}
+.card-title{font-family:'Cormorant Garamond',serif;font-size:13px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--text);padding-bottom:8px;margin-bottom:14px;border-bottom:1.5px solid var(--gold);}
+
+/* editable fields */
+[contenteditable]{outline:none;cursor:text;transition:background .15s;}
+[contenteditable]:hover{background:rgba(196,162,64,.06);border-radius:3px;}
+[contenteditable]:focus{background:rgba(196,162,64,.1);border-radius:3px;}
+.write-line{display:block;width:100%;border-bottom:1px solid var(--line);padding:4px 6px;margin-bottom:10px;font-size:12px;color:var(--text);line-height:1.6;min-height:24px;transition:border-color .15s;}
+.write-line:focus{border-bottom-color:var(--gold);}
+.write-line:empty::before{content:attr(data-ph);color:#ccc;font-style:italic;}
+input[type="text"]{border:none;background:transparent;border-bottom:1.5px solid var(--gold);font-family:'Nunito',sans-serif;font-size:13px;color:var(--text);outline:none;padding:4px 6px;width:100%;transition:background .15s;}
+input[type="text"]:focus{background:rgba(196,162,64,.08);border-radius:4px;}
+input[type="text"]::placeholder{color:#ccc;font-style:italic;}
+
+/* checkboxes */
+.cb-wrap{display:flex;align-items:flex-start;gap:10px;margin-bottom:8px;cursor:pointer;}
+.cb-wrap input[type="checkbox"]{display:none;}
+.cb-box{width:16px;height:16px;border:1.5px solid #bbb;border-radius:3px;flex-shrink:0;background:white;display:flex;align-items:center;justify-content:center;transition:all .15s;margin-top:2px;}
+.cb-wrap input:checked+.cb-box{background:var(--gold);border-color:var(--gold);}
+.cb-wrap input:checked+.cb-box::after{content:'✓';font-size:10px;color:white;font-weight:700;}
+.cb-wrap input:checked~.cb-text{text-decoration:line-through;color:#aaa;}
+.cb-text{font-size:12px;color:var(--sub);flex:1;padding-top:2px;}
+.cb-text[contenteditable]:empty::before{content:'Write task here...';color:#ccc;font-style:italic;}
+
+/* mood */
+.mood-row{display:flex;gap:10px;flex-wrap:wrap;}
+.mood-btn{font-size:26px;cursor:pointer;opacity:.4;border:2px solid transparent;border-radius:50%;padding:4px;transition:all .2s;user-select:none;}
+.mood-btn:hover{opacity:.8;transform:scale(1.2);}
+.mood-btn.active{opacity:1;border-color:var(--gold);transform:scale(1.25);}
+
+/* ── YEARLY ── */
+.yr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px;margin-bottom:24px;}
+.mm-head{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;text-align:center;padding:5px;border-radius:4px;margin-bottom:4px;color:var(--text);}
+.mm-cal{display:grid;grid-template-columns:repeat(7,1fr);text-align:center;}
+.mm-cal span{font-size:7.5px;line-height:2.2;color:var(--sub);}
+.mm-cal .dh{font-size:7px;color:var(--muted);font-weight:700;}
+.mm-cal .su{color:#c05050;}
+.mm-cal .sat{color:#8888cc;}
+
+/* q grid */
+.q-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;margin-bottom:16px;}
+.q-card{background:rgba(255,255,255,.85);border:1.5px solid var(--line);border-radius:12px;padding:16px;box-shadow:0 2px 12px rgba(0,0,0,.04);}
+.q-bar{height:3px;border-radius:3px;margin-bottom:12px;}
+
+/* ── MONTHLY ── */
+.month-nav{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+.month-nav-btn{background:var(--gold);color:#fff;border:none;width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;transition:all .18s;}
+.month-nav-btn:hover{background:#b89030;}
+.month-label{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:600;color:var(--text);letter-spacing:2px;flex:1;}
+.month-day-heads{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:4px;}
+.mdh{font-size:10px;font-weight:700;text-align:center;text-transform:uppercase;letter-spacing:1px;color:var(--muted);padding:5px 0;}
+.month-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:20px;}
+.mday{min-height:90px;border:1px solid #eee;border-radius:6px;padding:6px;background:rgba(255,255,255,.7);transition:border-color .15s;}
+.mday:hover{border-color:var(--gold);}
+.mday.empty{background:rgba(248,245,240,.4);}
+.mday-num{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:600;color:var(--text);margin-bottom:4px;}
+.mday.su .mday-num{color:#c05050;}
+.mday [contenteditable]{font-size:9px;color:var(--sub);min-height:60px;width:100%;}
+.mday [contenteditable]:empty::before{content:'';color:#eee;}
+.month-boxes{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+
+/* ── WEEKLY ── */
+.week-meta-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}
+.wk-schedule{overflow-x:auto;}
+.wk-table{min-width:600px;width:100%;border-collapse:collapse;}
+.wk-table th{padding:10px 8px;text-align:center;font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--text);border:1px solid var(--line);}
+.wk-table th.th-time{background:rgba(181,221,208,.3);width:80px;}
+.wk-table td{border:1px solid #eee;vertical-align:top;}
+.wk-table td.td-time{background:rgba(181,221,208,.12);text-align:center;vertical-align:middle;padding:4px;}
+.wk-table td.td-time span{font-size:9px;color:var(--muted);font-weight:600;}
+.wk-cell{min-height:32px;padding:4px 6px;width:100%;display:block;font-size:11px;color:var(--sub);}
+.wk-cell:empty::before{content:'';color:#f0ece4;}
+.wk-bottom{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-top:16px;}
+.wk-box{background:rgba(255,255,255,.85);border:1.5px solid var(--line);border-radius:10px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,.04);}
+.wk-box-title{font-size:10px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;}
+
+/* ── HABITS ── */
+.habit-meta{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:16px;}
+.ht-scroll{overflow-x:auto;border-radius:8px;}
+.ht-table{border-collapse:collapse;white-space:nowrap;}
+.ht-table th{font-size:8px;font-weight:700;color:var(--muted);padding:4px 3px;border-bottom:1.5px solid var(--line);text-align:center;min-width:20px;}
+.ht-table th.habit-th{text-align:left;min-width:120px;font-size:10px;padding-left:8px;position:sticky;left:0;background:var(--bg);}
+.ht-table td{padding:2px 2px;border-bottom:1px solid #f5f1eb;}
+.ht-table td.habit-td{font-size:11px;color:var(--text);padding:5px 8px;font-weight:500;white-space:nowrap;position:sticky;left:0;background:var(--bg);}
+.ht-box{width:18px;height:18px;border:1.5px solid #d8d4cc;border-radius:3px;margin:auto;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;}
+.ht-box:hover{border-color:var(--gold);background:rgba(196,162,64,.1);}
+.ht-box.done{background:var(--gold);border-color:var(--gold);}
+.ht-box.done::after{content:'✓';font-size:10px;color:white;font-weight:700;}
+.habit-bottom{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px;}
+.refl-prompt{font-size:10px;color:var(--muted);font-style:italic;margin-bottom:5px;margin-top:10px;}
+
+/* ── FINANCIAL ── */
+.fc-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.fc-lbl{font-size:11px;color:var(--sub);min-width:90px;font-weight:500;}
+.fc-line{flex:1;height:1px;background:#e8e4de;}
+.fc-input{text-align:right;width:130px !important;}
+.bar-section{margin-bottom:10px;}
+.bar-lbl{font-size:10px;color:var(--sub);display:flex;justify-content:space-between;margin-bottom:4px;}
+.bar-track{height:14px;background:#f0ece4;border-radius:10px;overflow:hidden;border:1px solid #ddd;cursor:pointer;position:relative;}
+.bar-track:hover{border-color:var(--gold);}
+.bar-fill{height:100%;border-radius:10px;transition:width .3s;}
+.bar-pct{position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:9px;font-weight:700;color:var(--sub);}
+
+/* ── WELLNESS ── */
+.well-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.well-row{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.well-ic{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.well-name-lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;}
+.well-checks{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
+.well-check{width:22px;height:22px;border:1.5px solid #ddd;border-radius:5px;cursor:pointer;transition:all .15s;}
+.well-check:hover{border-color:var(--gold);}
+.well-check.filled{background:var(--gold);border-color:var(--gold);}
+.mood-wk{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:10px;}
+.mw-day{text-align:center;}
+.mw-lbl{font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:5px;}
+.mw-circle{width:38px;height:38px;border-radius:50%;border:1.5px solid #ddd;margin:auto;cursor:pointer;transition:all .2s;}
+.mw-circle:hover{border-color:var(--gold);transform:scale(1.1);}
+
+/* ── STUDY ── */
+.study-header{display:grid;grid-template-columns:50px 1fr auto;align-items:stretch;border:1.5px solid var(--line);border-radius:10px;overflow:hidden;margin-bottom:16px;background:rgba(255,255,255,.85);}
+.s-icon{background:var(--lav);display:flex;align-items:center;justify-content:center;font-size:22px;padding:0 14px;}
+.s-title-box{background:var(--blue);opacity:.9;display:flex;align-items:center;padding:0 20px;}
+.s-title-box h3{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--text);letter-spacing:2px;}
+.s-date-box{border-left:1.5px solid var(--line);display:flex;align-items:center;padding:0 16px;gap:8px;min-width:200px;}
+.sp-table{width:100%;border-collapse:collapse;overflow:hidden;border-radius:8px;}
+.sp-table th{padding:10px 6px;text-align:center;font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--text);border:1px solid var(--line);}
+.sp-table th.th-t{background:var(--mint);width:110px;}
+.sp-table td{border:1px solid #eee;vertical-align:top;}
+.sp-table td.td-t{background:rgba(181,221,208,.15);vertical-align:middle;padding:6px;text-align:center;}
+.sp-table td.td-t input{font-size:10px;font-weight:600;color:var(--muted);text-align:center;width:100%;padding:2px;}
+.sp-cell{min-height:38px;padding:6px 8px;font-size:11px;color:var(--sub);display:block;width:100%;}
+.sp-cell:empty::before{content:'';color:#f0ece4;}
+.sp-lunch td{background:var(--peach) !important;font-weight:700 !important;}
+.sp-bottom{display:grid;grid-template-columns:1fr 220px;gap:14px;margin-top:14px;}
+.sp-mood-head{background:var(--pink);padding:12px 16px;border-radius:8px 8px 0 0;font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:700;color:var(--text);text-align:center;opacity:.9;}
+.sp-mood-body{border:1.5px solid var(--line);border-top:none;border-radius:0 0 8px 8px;padding:14px;background:rgba(255,255,255,.85);display:flex;flex-direction:column;align-items:center;gap:10px;}
+
+/* ── SAVE TOAST ── */
+.toast{
+  position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:#1c1c1c;color:#fff;padding:12px 24px;border-radius:50px;
+  font-size:13px;font-weight:600;letter-spacing:.5px;
+  opacity:0;transition:all .3s;z-index:999;pointer-events:none;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+@media(max-width:600px){
+  .land-year{font-size:80px;}
+  .land-title{font-size:20px;letter-spacing:2px;}
+  .nav-brand{display:none;}
+  .well-grid{grid-template-columns:1fr;}
+  .sp-bottom{grid-template-columns:1fr;}
+  .habit-bottom{grid-template-columns:1fr;}
+  .month-boxes{grid-template-columns:1fr;}
+  .week-meta-row{grid-template-columns:1fr;}
+}
+@media print{
+  #landing,.app-nav,.toast{display:none!important;}
+  #app{display:block!important;}
+  .section{display:block!important;page-break-after:always;}
+  body{background:none;}
+}
+
+/* ── COPYRIGHT PROTECTION ── */
+.wm-footer {
+  text-align: center;
+  padding: 10px 0 6px;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: rgba(196,162,64,.5);
+  font-family: 'Cinzel', serif;
+  text-transform: uppercase;
+  border-top: 1px solid rgba(196,162,64,.1);
+  margin-top: 30px;
+  user-select: none;
+}
+.wm-footer a { color: rgba(196,162,64,.6); text-decoration: none; }
+.wm-footer a:hover { color: var(--gold); }
+
+/* watermark on each section */
+.section::after {
+  content: '© VELVETSTORE · VELVETINKSTUDIO · GUMROAD';
+  position: fixed;
+  bottom: 72px; right: 16px;
+  font-size: 8px; letter-spacing: 2px;
+  color: rgba(196,162,64,.18);
+  font-family: 'Cinzel', serif;
+  text-transform: uppercase;
+  pointer-events: none;
+  user-select: none;
+  z-index: 50;
+}
+
+/* license popup */
+.license-overlay {
+  position: fixed; inset: 0;
+  background: rgba(15,8,15,.92);
+  backdrop-filter: blur(8px);
+  z-index: 9999;
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+}
+.license-box {
+  background: linear-gradient(135deg, #1e0f1e, #2d1a2d);
+  border: 1px solid rgba(196,162,64,.3);
+  border-radius: 16px;
+  padding: 40px 48px;
+  max-width: 520px;
+  text-align: center;
+  box-shadow: 0 40px 100px rgba(0,0,0,.7);
+}
+.license-logo {
+  font-family: 'Cinzel', serif;
+  font-size: 28px; font-weight: 700;
+  color: #e8dfd0; letter-spacing: 6px;
+  margin-bottom: 4px;
+}
+.license-logo span { color: #c4a240; }
+.license-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic; font-size: 13px;
+  color: rgba(196,162,64,.7); letter-spacing: 4px;
+  margin-bottom: 28px;
+}
+.license-divider {
+  width: 60px; height: 1px;
+  background: rgba(196,162,64,.4);
+  margin: 0 auto 24px;
+}
+.license-text {
+  font-size: 12px; color: rgba(255,255,255,.6);
+  line-height: 1.9; margin-bottom: 24px;
+  font-family: 'Nunito', sans-serif;
+}
+.license-text strong { color: rgba(196,162,64,.9); }
+.license-agree {
+  background: rgba(196,162,64,.15);
+  border: 1px solid rgba(196,162,64,.4);
+  color: #c4a240;
+  padding: 13px 36px;
+  border-radius: 50px;
+  font-family: 'Cinzel', serif;
+  font-size: 12px; letter-spacing: 2px;
+  cursor: pointer; transition: all .2s;
+  text-transform: uppercase;
+}
+.license-agree:hover { background: rgba(196,162,64,.3); }
+
+/* nav brand update */
+.nav-brand { cursor: default; }
+
+</style>
+</head>
+<body>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━
+     LANDING PAGE
+━━━━━━━━━━━━━━━━━━━━ -->
+<div id="landing">
+  <div class="blob bl1"></div><div class="blob bl2"></div>
+  <div class="blob bl3"></div><div class="blob bl4"></div>
+  <div class="land-inner">
+    <div class="land-tag">✦ Premium Digital Planner 2026 ✦</div>
+    <div class="land-year">2026</div>
+    <div class="land-divider"></div>
+    <div class="land-title">All-in-One<br>Productivity Hub</div>
+    <div class="land-sub">Your complete system for an intentional year. Click any field to type, check off tasks, track habits and save your progress — all in your browser. No downloads, no apps, no sign-up.</div>
+    <div class="badges">
+      <div class="badge">📅 Yearly Calendar</div>
+      <div class="badge">📆 Monthly View</div>
+      <div class="badge">📋 Weekly Spread</div>
+      <div class="badge">✅ Habit Tracker</div>
+      <div class="badge">💰 Financial Planner</div>
+      <div class="badge">🌿 Wellness</div>
+      <div class="badge">📚 Study Planner</div>
+    </div>
+    <button class="start-btn" onclick="openApp()">✨ Open My Planner</button>
+    <div class="start-hint">Free to use · Works on any device · Auto-saves your progress</div>
+  </div>
+  <div class="scroll-down">↓</div>
+</div>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━
+     APP
+━━━━━━━━━━━━━━━━━━━━ -->
+<div id="app">
+
+  <!-- NAV -->
+  <nav class="app-nav">
+    <div class="nav-brand" style="font-family:'Cinzel',serif;letter-spacing:3px"><span style="color:#c4a240">V</span>elvetstore</div>
+    <div class="nav-tabs">
+      <button class="tab active" onclick="showTab('yearly',this)">📅 Yearly</button>
+      <button class="tab" onclick="showTab('monthly',this)">📆 Monthly</button>
+      <button class="tab" onclick="showTab('weekly',this)">📋 Weekly</button>
+      <button class="tab" onclick="showTab('habits',this)">✅ Habits</button>
+      <button class="tab" onclick="showTab('financial',this)">💰 Financial</button>
+      <button class="tab" onclick="showTab('wellness',this)">🌿 Wellness</button>
+      <button class="tab" onclick="showTab('study',this)">📚 Study</button>
+    </div>
+    <div class="nav-actions">
+      <button class="nav-btn save" onclick="saveData()">💾 Save</button>
+      <button class="nav-btn print" onclick="window.print()">🖨 Print</button>
+    </div>
+  </nav>
+
+  <!-- ── YEARLY ── -->
+  <div id="tab-yearly" class="section active">
+    <div class="s-head"><h2>2026 at a Glance</h2><p>Yearly Overview & Goals</p></div>
+    <div class="gold-line"></div>
+    <div class="card">
+      <div class="card-title">Year Calendar</div>
+      <div class="yr-grid" id="yr-grid"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Quarterly Goals</div>
+      <div class="q-grid" id="q-grid"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Annual Intentions</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px;">
+        <div>
+          <div style="font-size:9px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px">🌟 Word of the Year</div>
+          <div class="write-line" contenteditable data-ph="Your word..."></div>
+          <div style="font-size:9px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:1.5px;margin:14px 0 10px">🎯 Top 3 Priorities</div>
+          <div class="write-line" contenteditable data-ph="1. Priority..."></div>
+          <div class="write-line" contenteditable data-ph="2."></div>
+          <div class="write-line" contenteditable data-ph="3."></div>
+        </div>
+        <div>
+          <div style="font-size:9px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px">📚 Books to Read</div>
+          <div class="write-line" contenteditable data-ph="Book 1..."></div>
+          <div class="write-line" contenteditable data-ph="Book 2..."></div>
+          <div class="write-line" contenteditable data-ph="Book 3..."></div>
+          <div class="write-line" contenteditable data-ph="Book 4..."></div>
+        </div>
+        <div>
+          <div style="font-size:9px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px">✈️ Places to Visit</div>
+          <div class="write-line" contenteditable data-ph="Destination..."></div>
+          <div class="write-line" contenteditable data-ph=""></div>
+          <div style="font-size:9px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:1.5px;margin:14px 0 10px">💪 Skills to Learn</div>
+          <div class="write-line" contenteditable data-ph="Skill..."></div>
+          <div class="write-line" contenteditable data-ph=""></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── MONTHLY ── -->
+  <div id="tab-monthly" class="section">
+    <div class="s-head"><h2>Monthly Planner</h2><p>Plan Your Month</p></div>
+    <div class="gold-line"></div>
+    <div class="card">
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
+        <button class="month-nav-btn" onclick="changeMonth(-1)">‹</button>
+        <div class="month-label" id="month-label">January 2026</div>
+        <button class="month-nav-btn" onclick="changeMonth(1)">›</button>
+        <input type="text" placeholder="Focus theme..." style="max-width:200px;" />
+      </div>
+      <div class="month-day-heads">
+        <div class="mdh" style="color:#c05050">Sun</div>
+        <div class="mdh">Mon</div><div class="mdh">Tue</div><div class="mdh">Wed</div>
+        <div class="mdh">Thu</div><div class="mdh">Fri</div>
+        <div class="mdh" style="color:#8888cc">Sat</div>
+      </div>
+      <div class="month-grid" id="month-grid"></div>
+    </div>
+    <div class="month-boxes">
+      <div class="card"><div class="card-title">🎯 Monthly Goals</div>
+        <div class="write-line" contenteditable data-ph="Goal 1..."></div>
+        <div class="write-line" contenteditable data-ph="Goal 2..."></div>
+        <div class="write-line" contenteditable data-ph="Goal 3..."></div>
+        <div class="write-line" contenteditable data-ph="Goal 4..."></div>
+      </div>
+      <div class="card"><div class="card-title">🏆 Monthly Wins</div>
+        <div class="write-line" contenteditable data-ph="Win 1..."></div>
+        <div class="write-line" contenteditable data-ph="Win 2..."></div>
+        <div class="write-line" contenteditable data-ph="Win 3..."></div>
+        <div class="write-line" contenteditable data-ph="Win 4..."></div>
+      </div>
+      <div class="card"><div class="card-title">💡 Ideas & Notes</div>
+        <div class="write-line" contenteditable data-ph="Note..."></div>
+        <div class="write-line" contenteditable data-ph=""></div>
+        <div class="write-line" contenteditable data-ph=""></div>
+        <div class="write-line" contenteditable data-ph=""></div>
+      </div>
+      <div class="card"><div class="card-title">📝 Reflections</div>
+        <div class="write-line" contenteditable data-ph="Reflection..."></div>
+        <div class="write-line" contenteditable data-ph=""></div>
+        <div class="write-line" contenteditable data-ph=""></div>
+        <div class="write-line" contenteditable data-ph=""></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── WEEKLY ── -->
+  <div id="tab-weekly" class="section">
+    <div class="s-head"><h2>Weekly Spread</h2><p>Plan · Prioritize · Execute</p></div>
+    <div class="gold-line"></div>
+    <div class="week-meta-row">
+      <div class="card" style="padding:14px 18px;">
+        <div style="font-size:10px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px">Week of</div>
+        <input type="text" placeholder="e.g. Jan 6 – Jan 12, 2026" />
+      </div>
+      <div class="card" style="padding:14px 18px;">
+        <div style="font-size:10px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px">Weekly Theme</div>
+        <input type="text" placeholder="e.g. Deep focus week" />
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Schedule</div>
+      <div class="wk-schedule">
+        <table class="wk-table" id="wk-table"></table>
+      </div>
+    </div>
+    <div class="wk-bottom">
+      <div class="wk-box"><div class="wk-box-title">⚡ Top Priorities</div>
+        <label class="cb-wrap"><input type="checkbox"><div class="cb-box"></div><div class="cb-text" contenteditable data-ph="Priority..."></div></label>
+        <label class="cb-wrap"><input type="checkbox"><div class="cb-box"></div><div class="cb-text" contenteditable data-ph=""></div></label>
+        <label class="cb-wrap"><input type="checkbox"><div class="cb-box"></div><div class="cb-text" contenteditable data-ph=""></div></label>
+        <label class="cb-wrap"><input type="checkbox"><div class="cb-box"></div><div class="cb-text" contenteditable data-ph=""></div></label>
+      </div>
+      <div class="wk-box"><div class="wk-box-title">🙏 Gratitude</div>
+        <div class="write-line" contenteditable data-ph="I'm grateful for..."></div>
+        <div class="write-line" contenteditable data-ph=""></div>
+        <div class="write-line" contenteditable data-ph=""></div>
+      </div>
+      <div class="wk-box"><div class="wk-box-title">💡 Ideas & Insights</div>
+        <div class="write-line" contenteditable data-ph="Idea..."></div>
+        <div class="write-line" contenteditable data-ph=""></div>
+        <div class="write-line" contenteditable data-ph=""></div>
+      </div>
+      <div class="wk-box"><div class="wk-box-title">🏅 Weekly Win</div>
+        <div class="write-line" contenteditable data-ph="My win this week..."></div>
+        <div class="wk-box-title" style="margin-top:12px">😊 Mood</div>
+        <div class="mood-row">
+          <span class="mood-btn" onclick="toggleMood(this)">😊</span>
+          <span class="mood-btn" onclick="toggleMood(this)">😐</span>
+          <span class="mood-btn" onclick="toggleMood(this)">😔</span>
+          <span class="mood-btn" onclick="toggleMood(this)">😤</span>
+          <span class="mood-btn" onclick="toggleMood(this)">😄</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── HABITS ── -->
+  <div id="tab-habits" class="section">
+    <div class="s-head"><h2>Habit Tracker</h2><p>Track · Streak · Succeed</p></div>
+    <div class="gold-line"></div>
+    <div class="card">
+      <div class="habit-meta">
+        <div style="display:flex;align-items:center;gap:8px;font-size:11px;color:var(--muted)">Month: <input type="text" placeholder="January" style="width:120px;" /></div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:11px;color:var(--muted)">Goal: <input type="text" placeholder="Build consistency" style="width:200px;" /></div>
+      </div>
+      <div class="ht-scroll"><table class="ht-table" id="ht-table"></table></div>
+    </div>
+    <div class="habit-bottom">
+      <div class="card"><div class="card-title">Weekly Mood Log</div>
+        <div class="mood-wk" id="mood-wk-habit"></div>
+        <div style="font-size:9px;color:var(--muted)">Click circles to color your mood</div>
+      </div>
+      <div class="card"><div class="card-title">Monthly Reflection</div>
+        <div class="refl-prompt">Habits that served me best:</div>
+        <div class="write-line" contenteditable data-ph=""></div>
+        <div class="write-line" contenteditable data-ph=""></div>
+        <div class="refl-prompt">What I want to improve:</div>
+        <div class="write-line" contenteditable data-ph=""></div>
+        <div class="write-line" contenteditable data-ph=""></div>
+        <div class="refl-prompt">My biggest win:</div>
+        <div class="write-line" contenteditable data-ph=""></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── FINANCIAL ── -->
+  <div id="tab-financial" class="section">
+    <div class="s-head"><h2>Financial Planner</h2><p>Balance · Budget · Grow</p></div>
+    <div class="gold-line"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+      <div>
+        <div class="card"><div class="card-title">💰 Monthly Budget</div>
+          <div class="fc-row"><span class="fc-lbl">Income</span><div class="fc-line"></div><input type="text" class="fc-input" placeholder="$ amount" /></div>
+          <div class="fc-row"><span class="fc-lbl">Fixed Costs</span><div class="fc-line"></div><input type="text" class="fc-input" placeholder="$ amount" /></div>
+          <div class="fc-row"><span class="fc-lbl">Variable Costs</span><div class="fc-line"></div><input type="text" class="fc-input" placeholder="$ amount" /></div>
+          <div class="fc-row"><span class="fc-lbl">Savings</span><div class="fc-line"></div><input type="text" class="fc-input" placeholder="$ amount" /></div>
+          <div class="fc-row"><span class="fc-lbl">Investments</span><div class="fc-line"></div><input type="text" class="fc-input" placeholder="$ amount" /></div>
+          <div style="border-top:1px dashed #eee;padding-top:10px;margin-top:4px" class="fc-row"><span class="fc-lbl" style="font-weight:700;color:var(--text)">Remaining</span><div class="fc-line"></div><input type="text" class="fc-input" placeholder="$ remaining" style="font-weight:700;color:var(--text);" /></div>
+        </div>
+        <div class="card"><div class="card-title">📝 Financial Notes</div>
+          <div class="write-line" contenteditable data-ph="Notes..."></div>
+          <div class="write-line" contenteditable data-ph=""></div>
+          <div class="write-line" contenteditable data-ph=""></div>
+          <div class="write-line" contenteditable data-ph=""></div>
+        </div>
+      </div>
+      <div>
+        <div class="card"><div class="card-title">📈 Savings Goals</div>
+          <div id="savings-bars"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── WELLNESS ── -->
+  <div id="tab-wellness" class="section">
+    <div class="s-head"><h2>Wellness Corner</h2><p>Nourish · Rest · Thrive</p></div>
+    <div class="gold-line"></div>
+    <div class="well-grid">
+      <div>
+        <div class="card"><div class="card-title">🌿 Daily Habits</div>
+          <div class="well-row">
+            <div class="well-ic" style="background:var(--blue)">💧</div>
+            <div style="flex:1"><div class="well-name-lbl">Hydration</div><div class="well-checks" id="wc-h"></div></div>
+          </div>
+          <div class="well-row">
+            <div class="well-ic" style="background:var(--lav)">😴</div>
+            <div style="flex:1"><div class="well-name-lbl">Sleep</div><div class="well-checks" id="wc-s"></div></div>
+          </div>
+          <div class="well-row">
+            <div class="well-ic" style="background:var(--peach)">🏃</div>
+            <div style="flex:1"><div class="well-name-lbl">Exercise</div><div class="well-checks" id="wc-e"></div></div>
+          </div>
+          <div class="well-row" style="margin-bottom:0">
+            <div class="well-ic" style="background:var(--mint)">🧘</div>
+            <div style="flex:1"><div class="well-name-lbl">Mindfulness</div><div class="well-checks" id="wc-m"></div></div>
+          </div>
+        </div>
+        <div class="card"><div class="card-title">✍️ Reflections</div>
+          <div class="refl-prompt">I am grateful for...</div>
+          <div class="write-line" contenteditable data-ph=""></div>
+          <div class="refl-prompt">This week's intention...</div>
+          <div class="write-line" contenteditable data-ph=""></div>
+          <div class="refl-prompt">I will care for myself by...</div>
+          <div class="write-line" contenteditable data-ph=""></div>
+        </div>
+      </div>
+      <div>
+        <div class="card"><div class="card-title">🌈 Weekly Mood</div>
+          <div class="mood-wk" id="mood-wk-well"></div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;font-size:10px;color:var(--sub);margin-top:8px">
+            <span>😄 Thriving</span><span>😊 Good</span><span>😐 Okay</span><span>😔 Low</span><span>😤 Stressed</span>
+          </div>
+        </div>
+        <div class="card"><div class="card-title">😊 Today's Mood</div>
+          <div class="mood-row" style="justify-content:center;margin-bottom:16px">
+            <span class="mood-btn" onclick="toggleMood(this)">😊</span>
+            <span class="mood-btn" onclick="toggleMood(this)">😐</span>
+            <span class="mood-btn" onclick="toggleMood(this)">😔</span>
+            <span class="mood-btn" onclick="toggleMood(this)">😤</span>
+            <span class="mood-btn" onclick="toggleMood(this)">😄</span>
+          </div>
+          <div class="write-line" contenteditable data-ph="How are you feeling today?"></div>
+          <div class="write-line" contenteditable data-ph=""></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── STUDY ── -->
+  <div id="tab-study" class="section">
+    <div class="s-head"><h2>Daily Study Planner</h2><p>Focus · Plan · Execute</p></div>
+    <div class="gold-line"></div>
+    <div class="study-header">
+      <div class="s-icon">📖</div>
+      <div class="s-title-box"><h3>My Study Planner</h3></div>
+      <div class="s-date-box">
+        <span style="font-size:12px;font-weight:700;color:var(--sub);white-space:nowrap">Date:</span>
+        <input type="text" placeholder="e.g. Mon Jan 6" />
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px;">
+      <div class="card"><div class="card-title">📌 Today's Main Focus</div>
+        <div class="write-line" contenteditable data-ph="What is your main focus today?"></div>
+        <div class="write-line" contenteditable data-ph=""></div>
+        <div class="write-line" contenteditable data-ph=""></div>
+      </div>
+      <div class="card"><div class="card-title">🎯 Today's Goals</div>
+        <div class="write-line" contenteditable data-ph="Goal 1..."></div>
+        <div class="write-line" contenteditable data-ph="Goal 2..."></div>
+        <div class="write-line" contenteditable data-ph="Goal 3..."></div>
+      </div>
+    </div>
+    <div class="card"><div class="card-title">📅 Weekly Study Schedule</div>
+      <div style="overflow-x:auto;">
+        <table class="sp-table" id="sp-table">
+          <thead><tr>
+            <th class="th-t">TIME</th>
+            <th style="background:var(--blue);opacity:.85">MON</th>
+            <th style="background:var(--pink);opacity:.85">TUE</th>
+            <th style="background:var(--peach);opacity:.85">WED</th>
+            <th style="background:var(--lav);opacity:.85">THUR</th>
+            <th style="background:var(--yellow);opacity:.85">FRI</th>
+          </tr></thead>
+          <tbody id="sp-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="sp-bottom">
+      <div class="card"><div class="card-title">📝 Today's To-Do List</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px 16px;">
+          <label class="cb-wrap"><input type="checkbox"><div class="cb-box"></div><div class="cb-text" contenteditable data-ph="Task..."></div></label>
+          <label class="cb-wrap"><input type="checkbox"><div class="cb-box"></div><div class="cb-text" contenteditable data-ph="Task..."></div></label>
+          <label class="cb-wrap"><input type="checkbox"><div class="cb-box"></div><div class="cb-text" contenteditable data-ph=""></div></label>
+          <label class="cb-wrap"><input type="checkbox"><div class="cb-box"></div><div class="cb-text" contenteditable data-ph=""></div></label>
+          <label class="cb-wrap"><input type="checkbox"><div class="cb-box"></div><div class="cb-text" contenteditable data-ph=""></div></label>
+          <label class="cb-wrap"><input type="checkbox"><div class="cb-box"></div><div class="cb-text" contenteditable data-ph=""></div></label>
+          <label class="cb-wrap"><input type="checkbox"><div class="cb-box"></div><div class="cb-text" contenteditable data-ph=""></div></label>
+          <label class="cb-wrap"><input type="checkbox"><div class="cb-box"></div><div class="cb-text" contenteditable data-ph=""></div></label>
+        </div>
+      </div>
+      <div>
+        <div class="sp-mood-head">Today's Mood</div>
+        <div class="sp-mood-body">
+          <div class="mood-row" style="justify-content:center">
+            <span class="mood-btn" onclick="toggleMood(this)">😊</span>
+            <span class="mood-btn" onclick="toggleMood(this)">😐</span>
+            <span class="mood-btn" onclick="toggleMood(this)">😔</span>
+            <span class="mood-btn" onclick="toggleMood(this)">😤</span>
+            <span class="mood-btn" onclick="toggleMood(this)">😄</span>
+          </div>
+          <div style="width:100%;height:1px;background:var(--line)"></div>
+          <div style="font-size:9px;color:var(--muted)">How are you feeling?</div>
+          <div class="write-line" contenteditable data-ph="Write here..." style="width:100%"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /app -->
+
+<div class="toast" id="toast">✅ Progress saved!</div>
+
+
+<!-- ── LICENSE POPUP ── -->
+<div class="license-overlay" id="license-overlay">
+  <div class="license-box">
+    <div class="license-logo"><span>V</span>ELVET<span style="margin-left:8px">S</span>TORE</div>
+    <div class="license-sub">velvetinkstudio · gumroad</div>
+    <div class="license-divider"></div>
+    <div class="license-text">
+      Welcome to your <strong>2026 All-in-One Productivity Hub</strong>.<br><br>
+      This planner is for <strong>personal use only</strong>.<br>
+      Reselling, sharing or redistributing this product<br>
+      is strictly prohibited.<br><br>
+      <strong>© 2026 Velvetstore · All Rights Reserved</strong><br>
+      <span style="font-size:10px;opacity:.6">gumroad.com/velvetinkstudio</span>
+    </div>
+    <button class="license-agree" onclick="acceptLicense()">✦ I Agree — Open My Planner</button>
+  </div>
+</div>
+
+<!-- ── SECTION WATERMARK FOOTER (added to each section dynamically) ── -->
+
+<script>
+
+// ── LICENSE POPUP
+function acceptLicense(){
+  document.getElementById('license-overlay').style.display='none';
+  localStorage.setItem('vs_license_accepted','1');
+}
+// Show popup only once per browser
+if(localStorage.getItem('vs_license_accepted')){
+  document.getElementById('license-overlay').style.display='none';
+}
+
+// ── RIGHT-CLICK DISABLE
+document.addEventListener('contextmenu', e => {
+  // allow right-click on input fields
+  if(['INPUT','TEXTAREA'].includes(e.target.tagName)) return;
+  e.preventDefault();
+  return false;
+});
+
+// ── DEVTOOLS DETECT (basic deterrent)
+(function(){
+  let devtools = false;
+  const threshold = 160;
+  setInterval(()=>{
+    if(window.outerWidth-window.innerWidth>threshold||window.outerHeight-window.innerHeight>threshold){
+      if(!devtools){ devtools=true; }
+    } else { devtools=false; }
+  }, 1000);
+})();
+
+// ── ADD COPYRIGHT FOOTER TO EVERY TAB
+document.querySelectorAll('.section').forEach(sec => {
+  const footer = document.createElement('div');
+  footer.className = 'wm-footer';
+  footer.innerHTML = '© 2026 <strong>Velvetstore</strong> · All Rights Reserved · <a href="https://gumroad.com/velvetinkstudio" target="_blank">gumroad.com/velvetinkstudio</a> · Unauthorized resale prohibited';
+  sec.appendChild(footer);
+});
+
+// ── UPDATE LANDING BRAND
+document.querySelector('.land-tag').innerHTML = '✦ Premium Digital Planner · <strong style="color:#c4a240;letter-spacing:3px">VELVETSTORE</strong> ✦';
+document.querySelector('.start-hint').innerHTML = 'By <strong>velvetinkstudio</strong> on Gumroad · Personal use only · Auto-saves your progress';
+
+
+// ── OPEN APP
+function openApp(){
+  document.getElementById('landing').style.display='none';
+  document.getElementById('app').style.display='block';
+  window.scrollTo(0,0);
+}
+
+// ── TABS
+function showTab(id,btn){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ── MOOD TOGGLE
+function toggleMood(el){el.classList.toggle('active');}
+
+// ── YEARLY CALENDAR
+const mons=[
+  {n:'JAN',s:4,d:31,c:'var(--mint)'},{n:'FEB',s:0,d:28,c:'var(--pink)'},
+  {n:'MAR',s:0,d:31,c:'var(--blue)'},{n:'APR',s:3,d:30,c:'var(--peach)'},
+  {n:'MAY',s:5,d:31,c:'var(--lav)'},{n:'JUN',s:1,d:30,c:'var(--yellow)'},
+  {n:'JUL',s:3,d:31,c:'var(--mint)'},{n:'AUG',s:6,d:31,c:'var(--pink)'},
+  {n:'SEP',s:2,d:30,c:'var(--blue)'},{n:'OCT',s:4,d:31,c:'var(--peach)'},
+  {n:'NOV',s:0,d:30,c:'var(--sage)'},{n:'DEC',s:2,d:31,c:'var(--yellow)'}
+];
+const yrG=document.getElementById('yr-grid');
+mons.forEach(m=>{
+  const d=document.createElement('div');
+  let h=`<div class="mm-head" style="background:${m.c}">${m.n}</div><div class="mm-cal">`;
+  ['S','M','T','W','T','F','S'].forEach(x=>h+=`<span class="dh">${x}</span>`);
+  for(let i=0;i<m.s;i++)h+=`<span></span>`;
+  for(let x=1;x<=m.d;x++){const c=(x+m.s-1)%7;h+=`<span class="${c===0?'su':c===6?'sat':''}">${x}</span>`;}
+  h+='</div>';d.innerHTML=h;yrG.appendChild(d);
+});
+
+// ── QUARTERLY
+const qG=document.getElementById('q-grid');
+[['Q1','Jan–Mar','var(--mint)'],['Q2','Apr–Jun','var(--pink)'],
+ ['Q3','Jul–Sep','var(--blue)'],['Q4','Oct–Dec','var(--yellow)']].forEach(([q,r,c])=>{
+  const card=document.createElement('div');card.className='q-card';
+  let h=`<div style="font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;color:var(--text);margin-bottom:2px">${q}</div>`;
+  h+=`<div style="font-size:9px;color:var(--gold);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px">${r}</div>`;
+  h+=`<div class="q-bar" style="background:${c}"></div>`;
+  for(let i=0;i<4;i++) h+=`<label class="cb-wrap"><input type="checkbox"><div class="cb-box"></div><div class="cb-text" contenteditable data-ph="Goal ${i+1}..."></div></label>`;
+  card.innerHTML=h;qG.appendChild(card);
+});
+
+// ── MONTHLY CALENDAR
+let curMonth=0; // 0 = Jan
+const monthNames=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const monthStarts=[4,0,0,3,5,1,3,6,2,4,0,2]; // 2026 start days (Sun=0)
+const monthDays=[31,28,31,30,31,30,31,31,30,31,30,31];
+
+function buildMonth(){
+  const grid=document.getElementById('month-grid');
+  grid.innerHTML='';
+  document.getElementById('month-label').textContent=monthNames[curMonth]+' 2026';
+  const start=monthStarts[curMonth],days=monthDays[curMonth];
+  for(let i=0;i<start;i++){const e=document.createElement('div');e.className='mday empty';grid.appendChild(e);}
+  for(let d=1;d<=days;d++){
+    const col=(d+start-1)%7;
+    const div=document.createElement('div');div.className='mday'+(col===0?' su':'');
+    div.innerHTML=`<div class="mday-num">${d}</div><div contenteditable style="font-size:9px;min-height:60px;color:var(--sub);" data-ph="..."></div>`;
+    grid.appendChild(div);
+  }
+}
+function changeMonth(dir){curMonth=Math.max(0,Math.min(11,curMonth+dir));buildMonth();}
+buildMonth();
+
+// ── WEEKLY TABLE
+const wkT=document.getElementById('wk-table');
+const wDays=['Monday','Tuesday','Wednesday','Thursday','Friday'];
+const wColors=['var(--mint)','var(--pink)','var(--blue)','var(--peach)','var(--lav)'];
+const wTimes=['6 AM','7 AM','8 AM','9 AM','10 AM','11 AM','12 PM','1 PM','2 PM','3 PM','4 PM','5 PM','6 PM','7 PM','8 PM','9 PM'];
+let thead=`<thead><tr><th class="th-time">TIME</th>`;
+wDays.forEach((d,i)=>thead+=`<th style="background:${wColors[i]};opacity:.85">${d}</th>`);
+thead+=`<th style="background:var(--sage);opacity:.85">Weekend</th><th style="background:var(--peach);opacity:.85">Notes</th></tr></thead>`;
+let tbody='<tbody>';
+wTimes.forEach(t=>{
+  tbody+=`<tr><td class="td-time"><span>${t}</span></td>`;
+  for(let i=0;i<7;i++) tbody+=`<td><div class="wk-cell" contenteditable data-ph=""></div></td>`;
+  tbody+=`</tr>`;
+});
+tbody+='</tbody>';
+wkT.innerHTML=thead+tbody;
+
+// ── HABIT TRACKER
+const habits=[
+  {n:'📚 Read',c:'#b5ddd0'},{n:'🏋️ Exercise',c:'#f5c8d5'},
+  {n:'🧘 Meditate',c:'#d2c5e8'},{n:'✍️ Journal',c:'#f7d5b0'},
+  {n:'💧 Hydrate 8x',c:'#a5c5de'},{n:'😴 Sleep 8h',c:'#f2e5a5'},
+  {n:'🚶 Walk 10k',c:'#c5d5c0'},{n:'🥗 Eat Clean',c:'#f5c8d5'},
+  {n:'📵 Screen Limit',c:'#d2c5e8'},{n:'🎯 Deep Work',c:'#b5ddd0'},
+  {n:'💪 Stretch',c:'#f7d5b0'},{n:'🧡 Gratitude',c:'#a5c5de'},
+];
+const htT=document.getElementById('ht-table');
+let hth=`<thead><tr><th class="habit-th">Habit</th>`;
+for(let d=1;d<=31;d++)hth+=`<th>${d}</th>`;
+hth+=`</tr></thead><tbody>`;
+habits.forEach(({n,c})=>{
+  hth+=`<tr><td class="habit-td" style="border-left:3px solid ${c}">${n}</td>`;
+  for(let d=1;d<=31;d++)hth+=`<td><div class="ht-box" style="border-color:${c}80" onclick="this.classList.toggle('done')"></div></td>`;
+  hth+=`</tr>`;
+});
+// 2 custom rows
+for(let i=0;i<2;i++){
+  hth+=`<tr><td class="habit-td" style="border-left:3px solid #ddd"><input type="text" placeholder="Custom habit..." style="font-size:10px;width:100%;border:none;border-bottom:1px solid #ddd;background:transparent;outline:none;padding:2px;font-family:'Nunito',sans-serif;" /></td>`;
+  for(let d=1;d<=31;d++)hth+=`<td><div class="ht-box" onclick="this.classList.toggle('done')"></div></td>`;
+  hth+=`</tr>`;
+}
+htT.innerHTML=hth+'</tbody>';
+
+// ── MOOD GRIDS
+const moodCols=['rgba(181,221,208,.7)','rgba(245,200,213,.7)','rgba(242,229,165,.7)','rgba(210,197,232,.7)','rgba(247,213,176,.7)','rgba(165,197,222,.7)'];
+let mci=0;
+function colorMood(el){mci=(mci+1)%moodCols.length;el.style.background=moodCols[mci];el.style.borderColor='var(--gold)';}
+function buildMoodWk(id){
+  const el=document.getElementById(id);
+  ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].forEach(d=>{
+    el.innerHTML+=`<div class="mw-day"><div class="mw-lbl">${d}</div><div class="mw-circle" onclick="colorMood(this)"></div></div>`;
+  });
+}
+buildMoodWk('mood-wk-habit');buildMoodWk('mood-wk-well');
+
+// ── WELLNESS CHECKS
+function buildChecks(id,count,label){
+  const el=document.getElementById(id);
+  for(let i=0;i<count;i++){
+    const d=document.createElement('div');d.className='well-check';
+    d.onclick=function(){this.classList.toggle('filled');};el.appendChild(d);
+  }
+  const s=document.createElement('span');s.style.cssText='font-size:9px;color:#bbb;margin-left:4px;';s.textContent=label;el.appendChild(s);
+}
+buildChecks('wc-h',8,'glasses');buildChecks('wc-s',5,'hrs');
+buildChecks('wc-e',7,'days');buildChecks('wc-m',7,'min/day');
+
+// ── SAVINGS BARS
+const savBars=[
+  {name:'Emergency Fund',pct:35,grad:'linear-gradient(90deg,var(--mint),var(--blue))'},
+  {name:'Travel Fund',pct:20,grad:'linear-gradient(90deg,var(--pink),var(--lav))'},
+  {name:'Investment',pct:50,grad:'linear-gradient(90deg,var(--peach),var(--yellow))'},
+  {name:'Custom Goal',pct:10,grad:'linear-gradient(90deg,var(--lav),var(--blue))'},
+];
+const pcts=[0,10,20,25,30,35,40,50,60,70,75,80,90,100];
+const sbEl=document.getElementById('savings-bars');
+savBars.forEach(({name,pct,grad})=>{
+  sbEl.innerHTML+=`
+    <div class="bar-section">
+      <div class="bar-lbl">
+        <span>${name}</span>
+        <input type="text" placeholder="$ 0 / 0" style="width:100px;font-size:9px;border-bottom:1px solid #ddd;text-align:right;padding:0 2px;" />
+      </div>
+      <div class="bar-track" onclick="cycleBar(this)" title="Click to update %">
+        <div class="bar-fill" style="width:${pct}%;background:${grad}"></div>
+        <div class="bar-pct">${pct}%</div>
+      </div>
+    </div>`;
+});
+function cycleBar(el){
+  const fill=el.querySelector('.bar-fill'),pctEl=el.querySelector('.bar-pct');
+  const cur=parseInt(fill.style.width)||0;
+  const idx=pcts.indexOf(cur);
+  const next=pcts[(idx+1)%pcts.length];
+  fill.style.width=next+'%';pctEl.textContent=next+'%';
+}
+
+// ── STUDY TABLE
+const studySlots=[
+  {mon:'Your first subject',tue:'',wed:'',thu:'',fri:'Fill the to-do list'},
+  {mon:'',tue:'',wed:'Review yesterday\'s material',thu:'Focus time',fri:''},
+  {mon:'',tue:'Reading Session',wed:'',thu:'',fri:'Weekly self reflection'},
+  {mon:'Your fourth subject',tue:'',wed:'',thu:'Highlight important things',fri:''},
+  {mon:'Lunch Break',tue:'Lunch Break',wed:'Lunch Break',thu:'Lunch Break',fri:'Lunch Break',lunch:true},
+  {mon:'',tue:'',wed:'',thu:'',fri:''},
+  {mon:'Journaling',tue:'',wed:'Reading book',thu:'',fri:''},
+  {mon:'',tue:'',wed:'',thu:'',fri:'Reading Session'},
+  {mon:'',tue:'Doing homework',wed:'',thu:'Rearrange the book',fri:''},
+];
+const spTbody=document.getElementById('sp-tbody');
+studySlots.forEach(row=>{
+  const tr=document.createElement('tr');
+  if(row.lunch)tr.className='sp-lunch';
+  let h=`<td class="td-t"><input type="text" placeholder="${row.lunch?'Lunch time':'e.g. 9:00–10:00'}" /></td>`;
+  ['mon','tue','wed','thu','fri'].forEach(d=>h+=`<td><div class="sp-cell" contenteditable>${row[d]||''}</div></td>`);
+  tr.innerHTML=h;spTbody.appendChild(tr);
+});
+
+// ── SAVE / LOAD
+function showToast(msg){
+  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+function saveData(){
+  const d={};
+  document.querySelectorAll('[contenteditable]').forEach((el,i)=>d['ce_'+i]=el.innerHTML);
+  document.querySelectorAll('input[type="text"]').forEach((el,i)=>d['in_'+i]=el.value);
+  document.querySelectorAll('input[type="checkbox"]').forEach((el,i)=>d['cb_'+i]=el.checked);
+  document.querySelectorAll('.ht-box').forEach((el,i)=>d['hb_'+i]=el.classList.contains('done'));
+  document.querySelectorAll('.well-check').forEach((el,i)=>d['wc_'+i]=el.classList.contains('filled'));
+  document.querySelectorAll('.mood-btn').forEach((el,i)=>d['mb_'+i]=el.classList.contains('active'));
+  document.querySelectorAll('.bar-fill').forEach((el,i)=>d['pb_'+i]=el.style.width);
+  document.querySelectorAll('.mw-circle,.mw-circle-sm').forEach((el,i)=>d['mc_'+i]=el.style.background);
+  d['curMonth']=curMonth;
+  localStorage.setItem('planner2026_web',JSON.stringify(d));
+  showToast('✅ Progress saved!');
+}
+
+function loadSaved(){
+  const raw=localStorage.getItem('planner2026_web');
+  if(!raw)return;
+  const d=JSON.parse(raw);
+  if(d.curMonth!==undefined){curMonth=d.curMonth;buildMonth();}
+  document.querySelectorAll('[contenteditable]').forEach((el,i)=>{if(d['ce_'+i]!==undefined)el.innerHTML=d['ce_'+i];});
+  document.querySelectorAll('input[type="text"]').forEach((el,i)=>{if(d['in_'+i]!==undefined)el.value=d['in_'+i];});
+  document.querySelectorAll('input[type="checkbox"]').forEach((el,i)=>{if(d['cb_'+i])el.checked=true;});
+  document.querySelectorAll('.ht-box').forEach((el,i)=>{el.classList.toggle('done',!!d['hb_'+i]);});
+  document.querySelectorAll('.well-check').forEach((el,i)=>{el.classList.toggle('filled',!!d['wc_'+i]);});
+  document.querySelectorAll('.mood-btn').forEach((el,i)=>{el.classList.toggle('active',!!d['mb_'+i]);});
+  document.querySelectorAll('.bar-fill').forEach((el,i)=>{
+    if(d['pb_'+i]){el.style.width=d['pb_'+i];const p=el.nextElementSibling;if(p&&p.classList.contains('bar-pct'))p.textContent=d['pb_'+i];}
+  });
+  document.querySelectorAll('.mw-circle,.mw-circle-sm').forEach((el,i)=>{if(d['mc_'+i])el.style.background=d['mc_'+i];});
+}
+
+// Auto-save every 60s
+setInterval(saveData,60000);
+// Auto-load on open
+window.addEventListener('load',()=>{try{loadSaved();}catch(e){}});
+</script>
+</body>
+</html>
